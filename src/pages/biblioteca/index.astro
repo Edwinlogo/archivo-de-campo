@@ -13,7 +13,8 @@ const entries = (await getCollection('biblioteca'))
 
 const shelves = [...new Set(entries.map(e => e.data.shelf))].sort();
 const statuses = [...new Set(entries.map(e => e.data.status))].sort();
-const allFilters = [...shelves, ...statuses];
+const tags = [...new Set(entries.flatMap(e => e.data.tags || []))].sort();
+const allFilters = [...shelves, ...statuses, ...tags];
 ---
 
 <Base title="Biblioteca — Archivo de Campo" description="Libros recomendados sobre arquitectura, ingeniería, estimating y más.">
@@ -39,6 +40,7 @@ const allFilters = [...shelves, ...statuses];
           externalLink={entry.data.externalLink}
           cover={entry.data.cover}
           excerpt={entry.data.excerpt}
+          slug={entry.id}
         />
       </div>
     ))}

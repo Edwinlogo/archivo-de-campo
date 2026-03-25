@@ -15,9 +15,10 @@ interface Props {
   externalLink?: string;
   cover?: string;
   excerpt: string;
+  slug?: string;
 }
 
-const { title, author, year, shelf, status, rating, externalLink, cover, excerpt } = Astro.props;
+const { title, author, year, shelf, status, rating, externalLink, cover, excerpt, slug } = Astro.props;
 
 // Generar estrellas de rating
 function renderRating(r?: number): string {
@@ -43,10 +44,17 @@ function renderRating(r?: number): string {
       <TypeBadge type={shelf} label={shelf.replace(/-/g, ' ')} />
       <TypeBadge type={status} label={status} />
     </div>
-    {externalLink && (
-      <a href={externalLink} target="_blank" rel="noopener noreferrer" class="book-card__link">
-        Ver libro →
-      </a>
-    )}
+    <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+      {slug && (
+        <a href={`/biblioteca/${slug}/`} class="book-card__link">
+          Leer reseña →
+        </a>
+      )}
+      {externalLink && (
+        <a href={externalLink} target="_blank" rel="noopener noreferrer" class="book-card__link">
+          Enlace externo ↗
+        </a>
+      )}
+    </div>
   </div>
 </div>

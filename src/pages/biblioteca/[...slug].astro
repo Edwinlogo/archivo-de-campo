@@ -1,0 +1,51 @@
+---
+/**
+ * Página dinámica para cada libro de la Biblioteca.
+ */
+import EntryLayout from '../../layouts/EntryLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('biblioteca');
+  return entries.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<EntryLayout
+  title={entry.data.title}
+  date={entry.data.dateAdded}
+  type={entry.data.shelf}
+  tags={entry.data.tags}
+  backHref="/biblioteca/"
+  backLabel="La Biblioteca"
+  excerpt={entry.data.excerpt}
+>
+  <div class="book-meta">
+    <p><strong>Autor:</strong> {entry.data.author}</p>
+    <p><strong>Año:</strong> {entry.data.year}</p>
+    {entry.data.rating && (
+        <p><strong>Calificación:</strong> {'★'.repeat(entry.data.rating) + '☆'.repeat(5 - entry.data.rating)}</p>
+    )}
+    {entry.data.externalLink && (
+      <p style="margin-top: 1rem;"><a href={entry.data.externalLink} target="_blank" rel="noopener noreferrer">Ver recurso externo ↗</a></p>
+    )}
+  </div>
+  <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--color-gray-light, #ccc);" />
+  <Content />
+</EntryLayout>
+
+<style>
+  .book-meta {
+    margin-bottom: 2rem;
+    font-size: var(--step--1);
+  }
+  .book-meta p {
+    margin: 0.25rem 0;
+  }
+</style>
