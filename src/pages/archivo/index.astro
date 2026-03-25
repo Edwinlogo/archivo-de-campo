@@ -1,0 +1,43 @@
+---
+/**
+ * EL ARCHIVO — Índice de apuntes, reflexiones, memorias, resúmenes e ideas.
+ * Lista filtrable por etiqueta con buscador de texto.
+ */
+import Base from '../../layouts/Base.astro';
+import EntryCard from '../../components/EntryCard.astro';
+import TagFilter from '../../components/TagFilter.astro';
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('archivo'))
+  .filter(e => !e.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Recopilar todas las etiquetas únicas
+const allTags = [...new Set(entries.flatMap(e => e.data.tags))].sort();
+---
+
+<Base title="El Archivo — Archivo de Campo" description="Apuntes de clase, reflexiones personales, memorias y resúmenes conceptuales.">
+  <header class="page-header">
+    <h1>El Archivo</h1>
+    <p class="page-header__subtitle">
+      Apuntes de clase, reflexiones personales, memorias, resúmenes conceptuales e ideas en desarrollo.
+    </p>
+  </header>
+
+  <TagFilter tags={allTags} target="#archivo-list" showSearch={true} />
+
+  <ul class="entry-list" id="archivo-list">
+    {entries.map(entry => (
+      <li class="entry-list__item">
+        <EntryCard
+          href={`/archivo/${entry.id}/`}
+          title={entry.data.title}
+          date={entry.data.date}
+          type={entry.data.type}
+          excerpt={entry.data.excerpt}
+          tags={entry.data.tags}
+        />
+      </li>
+    ))}
+  </ul>
+</Base>

@@ -1,0 +1,48 @@
+---
+/**
+ * TypeBadge — Pill de color según tipo o categoría.
+ * Recibe el tipo como string y muestra el badge correspondiente.
+ * Props: type (string), label (opcional, string para display).
+ */
+interface Props {
+  type: string;
+  label?: string;
+}
+
+const { type, label } = Astro.props;
+
+// Mapa de tipos a clases CSS
+const classMap: Record<string, string> = {
+  'apunte': 'type-badge--apunte',
+  'reflexión': 'type-badge--reflexion',
+  'memoria': 'type-badge--memoria',
+  'resumen': 'type-badge--resumen',
+  'idea': 'type-badge--idea',
+  'arquitectura': 'type-badge--arquitectura',
+  'ingeniería civil': 'type-badge--ingenieria',
+  'estimating': 'type-badge--estimating',
+  'mixto': 'type-badge--mixto',
+  'construcción': 'type-badge--construccion',
+  'torres-telecomunicaciones': 'type-badge--torres',
+  'planos-documentación': 'type-badge--planos',
+  'urbanismo': 'type-badge--urbanismo',
+  'remodelaciones': 'type-badge--remodelaciones',
+  'planta-concreto': 'type-badge--planta',
+  'estimating-florida': 'type-badge--estimating-fl',
+  'software': 'type-badge--software',
+  'ia-aplicada': 'type-badge--ia',
+  'hardware': 'type-badge--hardware',
+  'workflow': 'type-badge--workflow',
+  'nueva-tecnologia': 'type-badge--nueva-tech',
+  'sketch': 'type-badge--sketch',
+  'fotografía': 'type-badge--fotografia',
+  'video': 'type-badge--video',
+  '360': 'type-badge--360',
+  'recorrido-virtual': 'type-badge--recorrido',
+};
+
+const badgeClass = classMap[type] || '';
+const displayLabel = label || type;
+---
+
+<span class={`type-badge ${badgeClass}`}>{displayLabel}</span>

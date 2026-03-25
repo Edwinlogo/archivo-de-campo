@@ -1,0 +1,41 @@
+---
+/**
+ * EntryCard — Card de entrada para listas del Archivo, Tecnología, etc.
+ * Muestra fecha, tipo (badge), título, excerpt y tags.
+ * Props: href, title, date, type, excerpt, tags.
+ */
+import TypeBadge from './TypeBadge.astro';
+
+interface Props {
+  href: string;
+  title: string;
+  date: Date;
+  type: string;
+  excerpt: string;
+  tags?: string[];
+}
+
+const { href, title, date, type, excerpt, tags = [] } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('es-ES', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<a href={href} class="entry-card" data-tags={tags.join(',')} data-title={title.toLowerCase()} data-excerpt={excerpt.toLowerCase()}>
+  <div class="entry-card__meta">
+    <span class="entry-card__date">{formattedDate}</span>
+    <TypeBadge type={type} />
+  </div>
+  <h3 class="entry-card__title">{title}</h3>
+  <p class="entry-card__excerpt">{excerpt}</p>
+  {tags.length > 0 && (
+    <div class="entry-card__tags">
+      {tags.map(tag => (
+        <span class="tag-pill">{tag}</span>
+      ))}
+    </div>
+  )}
+</a>

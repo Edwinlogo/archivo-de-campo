@@ -1,0 +1,76 @@
+---
+/**
+ * ETIQUETA INDIVIDUAL — Lista todas las entradas de TODAS las colecciones
+ * que comparten una etiqueta específica.
+ */
+import Base from '../../layouts/Base.astro';
+import EntryCard from '../../components/EntryCard.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const archivo = (await getCollection('archivo')).filter(e => !e.data.draft);
+  const proyectos = (await getCollection('proyectos')).filter(e => !e.data.draft);
+  const campo = (await getCollection('campo')).filter(e => !e.data.draft);
+  const biblioteca = await getCollection('biblioteca');
+  const tecnologia = (await getCollection('tecnologia')).filter(e => !e.data.draft);
+  const arte = (await getCollection('arte')).filter(e => !e.data.draft);
+
+  // Recopilar todas las etiquetas únicas
+  const allTags = new Set<string>();
+
+  const allEntries = [
+    ...archivo.map(e => ({ ...e, _collection: 'archivo', _type: e.data.type, _href: `/archivo/${e.id}/` })),
+    ...proyectos.map(e => ({ ...e, _collection: 'proyectos', _type: e.data.discipline, _href: `/proyectos/${e.id}/` })),
+    ...campo.map(e => ({ ...e, _collection: 'campo', _type: e.data.category, _href: `/campo/${e.id}/` })),
+    ...biblioteca.map(e => ({ ...e, _collection: 'biblioteca', _type: e.data.shelf, _href: '#' })),
+    ...tecnologia.map(e => ({ ...e, _collection: 'tecnologia', _type: e.data.category, _href: `/tecnologia/${e.id}/` })),
+    ...arte.map(e => ({ ...e, _collection: 'arte', _type: e.data.medium, _href: `/arte/${e.id}/` })),
+  ];
+
+  allEntries.forEach(e => e.data.tags.forEach((t: string) => allTags.add(t)));
+
+  return [...allTags].map(tag => ({
+    params: { tag },
+    props: {
+      tag,
+      entries: allEntries
+        .filter(e => e.data.tags.includes(tag))
+        .sort((a, b) => {
+          const dateA = 'date' in a.data ? new Date(a.data.date as Date).getTime() : ('dateAdded' in a.data ? new Date(a.data.dateAdded as Date).getTime() : 0);
+          const dateB = 'date' in b.data ? new Date(b.data.date as Date).getTime() : ('dateAdded' in b.data ? new Date(b.data.dateAdded as Date).getTime() : 0);
+          return dateB - dateA;
+        }),
+    },
+  }));
+}
+
+const { tag, entries } = Astro.props;
+---
+
+<Base title={`Etiqueta: ${tag} — Archivo de Campo`} description={`Todas las entradas con la etiqueta "${tag}".`}>
+  <header class="page-header">
+    <h1>#{tag}</h1>
+    <p class="page-header__subtitle">
+      {entries.length} {entries.length === 1 ? 'entrada' : 'entradas'} con esta etiqueta.
+    </p>
+  </header>
+
+  <ul class="entry-list">
+    {entries.map((entry: any) => (
+      <li class="entry-list__item">
+        <EntryCard
+          href={entry._href}
+          title={entry.data.title}
+          date={'date' in entry.data ? entry.data.date : entry.data.dateAdded}
+          type={entry._type}
+          excerpt={entry.data.excerpt}
+          tags={entry.data.tags}
+        />
+      </li>
+    ))}
+  </ul>
+
+  <div style="margin-top: 2rem;">
+    <a href="/etiquetas/" class="entry-back">← Todas las etiquetas</a>
+  </div>
+</Base>

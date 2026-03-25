@@ -1,0 +1,47 @@
+---
+/**
+ * Sidebar — Navegación principal fija a la izquierda.
+ * Muestra el nombre del sitio y enlaces a todas las secciones.
+ * El enlace activo se determina comparando la URL actual con la ruta.
+ */
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { href: '/', label: 'Inicio' },
+  { href: '/archivo/', label: 'El Archivo' },
+  { href: '/proyectos/', label: 'Proyectos & Proceso' },
+  { href: '/campo/', label: 'Campo & Obra' },
+  { href: '/biblioteca/', label: 'Biblioteca' },
+  { href: '/tecnologia/', label: 'Tecnología' },
+  { href: '/arte/', label: 'Arte & Visual' },
+  { href: '/etiquetas/', label: 'Etiquetas' },
+  { href: '/sobre/', label: 'Sobre mí' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<aside class="sidebar" aria-label="Navegación principal">
+  <div class="sidebar__logo">
+    <a href="/">Archivo<br />de Campo</a>
+  </div>
+
+  <nav>
+    <ul class="sidebar__nav">
+      {navItems.map(item => (
+        <li>
+          <a href={item.href} class={isActive(item.href) ? 'active' : ''}>
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <div class="sidebar__footer">
+    Arquitectura &<br />Ingeniería Civil
+  </div>
+</aside>

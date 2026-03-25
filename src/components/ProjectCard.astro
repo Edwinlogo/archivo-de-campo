@@ -1,0 +1,34 @@
+---
+/**
+ * ProjectCard — Card con imagen de portada para proyectos y campo.
+ * Props: href, title, year, discipline/category, excerpt, cover.
+ */
+import TypeBadge from './TypeBadge.astro';
+
+interface Props {
+  href: string;
+  title: string;
+  year: number;
+  type: string;
+  excerpt: string;
+  cover?: string;
+}
+
+const { href, title, year, type, excerpt, cover } = Astro.props;
+---
+
+<a href={href} class="project-card" data-type={type}>
+  {cover ? (
+    <img src={cover} alt={title} class="project-card__image" loading="lazy" />
+  ) : (
+    <div class="project-card__image" aria-hidden="true"></div>
+  )}
+  <div class="project-card__body">
+    <div class="project-card__meta">
+      <span class="project-card__year">{year}</span>
+      <TypeBadge type={type} />
+    </div>
+    <h3 class="project-card__title">{title}</h3>
+    <p class="project-card__excerpt">{excerpt}</p>
+  </div>
+</a>

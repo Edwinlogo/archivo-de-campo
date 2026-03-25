@@ -1,0 +1,31 @@
+---
+/**
+ * Página dinámica para cada entrada del Archivo.
+ * Genera una página por cada archivo MDX en content/archivo/.
+ */
+import EntryLayout from '../../layouts/EntryLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('archivo');
+  return entries.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<EntryLayout
+  title={entry.data.title}
+  date={entry.data.date}
+  type={entry.data.type}
+  tags={entry.data.tags}
+  backHref="/archivo/"
+  backLabel="El Archivo"
+  excerpt={entry.data.excerpt}
+>
+  <Content />
+</EntryLayout>

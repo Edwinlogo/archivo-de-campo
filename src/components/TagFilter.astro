@@ -1,0 +1,80 @@
+---
+/**
+ * TagFilter — Componente de filtrado por etiqueta.
+ * Genera botones de filtro que funcionan con JS puro, sin reload.
+ * Props: tags (lista de etiquetas disponibles), target (selector CSS del contenedor a filtrar).
+ */
+interface Props {
+  tags: string[];
+  target: string;
+  showSearch?: boolean;
+}
+
+const { tags, target, showSearch = false } = Astro.props;
+---
+
+<div class="filter-bar" data-filter-target={target}>
+  {showSearch && (
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Buscar por título o descripción..."
+      id="search-input"
+      aria-label="Buscar entradas"
+    />
+  )}
+  <span class="filter-bar__label">Filtrar por:</span>
+  <div class="filter-bar__tags">
+    <button class="filter-btn active" data-filter="all">Todos</button>
+    {tags.map(tag => (
+      <button class="filter-btn" data-filter={tag}>{tag}</button>
+    ))}
+  </div>
+</div>
+
+<script define:vars={{ target }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterBar = document.querySelector(`[data-filter-target="${target}"]`);
+    if (!filterBar) return;
+
+    const buttons = filterBar.querySelectorAll('.filter-btn');
+    const container = document.querySelector(target);
+    if (!container) return;
+
+    const items = container.querySelectorAll('[data-tags]');
+    const searchInput = document.getElementById('search-input');
+
+    let activeTag = 'all';
+    let searchQuery = '';
+
+    function filterItems() {
+      items.forEach(item => {
+        const tags = (item.getAttribute('data-tags') || '').toLowerCase();
+        const title = (item.getAttribute('data-title') || '').toLowerCase();
+        const excerpt = (item.getAttribute('data-excerpt') || '').toLowerCase();
+
+        const tagMatch = activeTag === 'all' || tags.split(',').includes(activeTag.toLowerCase());
+        const searchMatch = !searchQuery || title.includes(searchQuery) || excerpt.includes(searchQuery);
+
+        const parent = item.closest('.entry-list__item') || item;
+        parent.style.display = (tagMatch && searchMatch) ? '' : 'none';
+      });
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeTag = btn.getAttribute('data-filter') || 'all';
+        filterItems();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.toLowerCase().trim();
+        filterItems();
+      });
+    }
+  });
+</script>

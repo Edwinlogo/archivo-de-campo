@@ -1,0 +1,42 @@
+---
+/**
+ * TECNOLOGÍA & SOFTWARE — Herramientas digitales, IA aplicada, workflows.
+ * Lista filtrable por categoría con buscador.
+ */
+import Base from '../../layouts/Base.astro';
+import EntryCard from '../../components/EntryCard.astro';
+import TagFilter from '../../components/TagFilter.astro';
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('tecnologia'))
+  .filter(e => !e.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const categories = [...new Set(entries.map(e => e.data.category))].sort();
+---
+
+<Base title="Tecnología & Software — Archivo de Campo" description="Herramientas digitales, software profesional, IA aplicada y workflows documentados.">
+  <header class="page-header">
+    <h1>Tecnología & Software</h1>
+    <p class="page-header__subtitle">
+      Herramientas digitales, software profesional, IA aplicada y workflows documentados.
+    </p>
+  </header>
+
+  <TagFilter tags={categories} target="#tecnologia-list" showSearch={true} />
+
+  <ul class="entry-list" id="tecnologia-list">
+    {entries.map(entry => (
+      <li class="entry-list__item">
+        <EntryCard
+          href={`/tecnologia/${entry.id}/`}
+          title={entry.data.title}
+          date={entry.data.date}
+          type={entry.data.category}
+          excerpt={entry.data.excerpt}
+          tags={entry.data.tags}
+        />
+      </li>
+    ))}
+  </ul>
+</Base>

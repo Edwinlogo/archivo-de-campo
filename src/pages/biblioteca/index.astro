@@ -1,0 +1,46 @@
+---
+/**
+ * BIBLIOTECA — Libros recomendados con comentario personal.
+ * Filtrable por shelf y status.
+ */
+import Base from '../../layouts/Base.astro';
+import BookCard from '../../components/BookCard.astro';
+import TagFilter from '../../components/TagFilter.astro';
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('biblioteca'))
+  .sort((a, b) => b.data.dateAdded.getTime() - a.data.dateAdded.getTime());
+
+const shelves = [...new Set(entries.map(e => e.data.shelf))].sort();
+const statuses = [...new Set(entries.map(e => e.data.status))].sort();
+const allFilters = [...shelves, ...statuses];
+---
+
+<Base title="Biblioteca — Archivo de Campo" description="Libros recomendados sobre arquitectura, ingeniería, estimating y más.">
+  <header class="page-header">
+    <h1>Biblioteca</h1>
+    <p class="page-header__subtitle">
+      Libros recomendados con comentario personal y enlace externo.
+    </p>
+  </header>
+
+  <TagFilter tags={allFilters} target="#biblioteca-grid" />
+
+  <div class="book-grid" id="biblioteca-grid">
+    {entries.map(entry => (
+      <div data-tags={[entry.data.shelf, entry.data.status, ...entry.data.tags].join(',')}>
+        <BookCard
+          title={entry.data.title}
+          author={entry.data.author}
+          year={entry.data.year}
+          shelf={entry.data.shelf}
+          status={entry.data.status}
+          rating={entry.data.rating}
+          externalLink={entry.data.externalLink}
+          cover={entry.data.cover}
+          excerpt={entry.data.excerpt}
+        />
+      </div>
+    ))}
+  </div>
+</Base>

@@ -1,0 +1,92 @@
+---
+/**
+ * MobileNav — Menú hamburguesa para pantallas < 768px.
+ * Incluye header fijo con botón y panel de navegación desplegable.
+ * Usa JS mínimo para abrir/cerrar.
+ */
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { href: '/', label: 'Inicio' },
+  { href: '/archivo/', label: 'El Archivo' },
+  { href: '/proyectos/', label: 'Proyectos & Proceso' },
+  { href: '/campo/', label: 'Campo & Obra' },
+  { href: '/biblioteca/', label: 'Biblioteca' },
+  { href: '/tecnologia/', label: 'Tecnología' },
+  { href: '/arte/', label: 'Arte & Visual' },
+  { href: '/etiquetas/', label: 'Etiquetas' },
+  { href: '/sobre/', label: 'Sobre mí' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<!-- Header fijo mobile -->
+<header class="mobile-header" id="mobile-header">
+  <div class="mobile-header__title">
+    <a href="/">Archivo de Campo</a>
+  </div>
+  <button class="hamburger" id="hamburger-btn" aria-label="Abrir menú" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</header>
+
+<!-- Overlay -->
+<div class="mobile-nav-overlay" id="mobile-overlay"></div>
+
+<!-- Panel de navegación mobile -->
+<nav class="mobile-nav" id="mobile-nav" aria-label="Navegación móvil">
+  <ul class="mobile-nav__list">
+    {navItems.map(item => (
+      <li>
+        <a href={item.href} class={isActive(item.href) ? 'active' : ''}>
+          {item.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+  // Toggle del menú mobile
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('hamburger-btn');
+    const nav = document.getElementById('mobile-nav');
+    const overlay = document.getElementById('mobile-overlay');
+
+    if (!btn || !nav || !overlay) return;
+
+    function toggleMenu() {
+      const isOpen = btn!.classList.toggle('open');
+      nav!.style.display = isOpen ? 'block' : 'none';
+      overlay!.style.display = isOpen ? 'block' : 'none';
+      btn!.setAttribute('aria-expanded', String(isOpen));
+
+      // Pequeño delay para la animación
+      if (isOpen) {
+        requestAnimationFrame(() => {
+          nav!.classList.add('open');
+          overlay!.classList.add('open');
+        });
+      } else {
+        nav!.classList.remove('open');
+        overlay!.classList.remove('open');
+      }
+    }
+
+    btn.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+
+    // Cerrar al hacer click en un enlace
+    nav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (btn.classList.contains('open')) toggleMenu();
+      });
+    });
+  });
+</script>

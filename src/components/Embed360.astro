@@ -1,0 +1,21 @@
+---
+/**
+ * Embed360 — Iframe responsivo para recorridos 360°.
+ * Compatible con Kuula, Momento360 y similares.
+ * Props: url (URL del recorrido 360).
+ */
+interface Props {
+  url: string;
+}
+
+const { url } = Astro.props;
+---
+
+<div class="embed-360">
+  <iframe
+    src={url}
+    title="Recorrido 360°"
+    allowfullscreen
+    loading="lazy"
+  ></iframe>
+</div>

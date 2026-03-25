@@ -1,0 +1,54 @@
+---
+/**
+ * SOBRE MÍ — Página estática con contenido editable desde about-full.md.
+ */
+import Base from '../layouts/Base.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Leer y parsear el markdown del about
+const aboutPath = path.resolve('./content/config/about-full.md');
+const aboutRaw = fs.readFileSync(aboutPath, 'utf-8');
+
+// Convertir markdown básico a HTML de forma simple
+function simpleMarkdownToHtml(md: string): string {
+  return md
+    .split('\n\n')
+    .map(block => {
+      block = block.trim();
+      if (!block) return '';
+      if (block.startsWith('# ')) return `<h1>${block.slice(2)}</h1>`;
+      if (block.startsWith('## ')) return `<h2>${block.slice(3)}</h2>`;
+      if (block.startsWith('### ')) return `<h3>${block.slice(4)}</h3>`;
+      if (block.startsWith('---')) return '<hr />';
+      if (block.startsWith('- ')) {
+        const items = block.split('\n').map(line => {
+          const content = line.replace(/^- /, '');
+          return `<li>${content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')}</li>`;
+        }).join('');
+        return `<ul>${items}</ul>`;
+      }
+      if (block.startsWith('*') && block.endsWith('*')) {
+        return `<p><em>${block.slice(1, -1)}</em></p>`;
+      }
+      // Procesar links y bold/italic inline
+      let html = block
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+      return `<p>${html}</p>`;
+    })
+    .filter(Boolean)
+    .join('\n');
+}
+
+const aboutHtml = simpleMarkdownToHtml(aboutRaw);
+---
+
+<Base title="Sobre mí — Archivo de Campo" description="Presentación personal, las dos carreras como una sola visión, por qué existe este archivo.">
+  <header class="page-header">
+    <h1>Sobre mí</h1>
+  </header>
+
+  <div class="about-content prose" set:html={aboutHtml} />
+</Base>

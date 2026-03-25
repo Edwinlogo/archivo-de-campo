@@ -1,0 +1,49 @@
+---
+/**
+ * BaseHead — Metadatos SEO y recursos globales.
+ * Se incluye en el <head> de cada página.
+ * Props: title, description, ogImage (opcional).
+ */
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = 'Archivo de Campo — Apuntes, proyectos y trabajo de campo en arquitectura, ingeniería civil y estimating.',
+  ogImage = '/images/og-default.jpg',
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!-- Meta global -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- SEO -->
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(ogImage, Astro.site)} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+<!-- Estilos globales -->
+<link rel="stylesheet" href="/src/styles/global.css" />

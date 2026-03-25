@@ -1,0 +1,19 @@
+---
+/**
+ * PdfViewer — Embed de PDF con fallback a enlace de descarga.
+ * Props: url (ruta al archivo PDF), title (nombre descriptivo, opcional).
+ */
+interface Props {
+  url: string;
+  title?: string;
+}
+
+const { url, title = 'Documento PDF' } = Astro.props;
+---
+
+<div class="pdf-viewer">
+  <iframe src={url} title={title} loading="lazy"></iframe>
+  <p class="pdf-viewer__fallback">
+    ¿No se muestra? <a href={url} target="_blank" rel="noopener noreferrer">Descargar {title} →</a>
+  </p>
+</div>

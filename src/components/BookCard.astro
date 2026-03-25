@@ -1,0 +1,52 @@
+---
+/**
+ * BookCard — Card de libro con portada, autor, shelf, rating y enlace externo.
+ * Props: title, author, year, shelf, status, rating, externalLink, cover, excerpt.
+ */
+import TypeBadge from './TypeBadge.astro';
+
+interface Props {
+  title: string;
+  author: string;
+  year: number;
+  shelf: string;
+  status: string;
+  rating?: number;
+  externalLink?: string;
+  cover?: string;
+  excerpt: string;
+}
+
+const { title, author, year, shelf, status, rating, externalLink, cover, excerpt } = Astro.props;
+
+// Generar estrellas de rating
+function renderRating(r?: number): string {
+  if (!r) return '';
+  return '★'.repeat(r) + '☆'.repeat(5 - r);
+}
+---
+
+<div class="book-card" data-shelf={shelf} data-status={status}>
+  {cover ? (
+    <img src={cover} alt={`Portada de ${title}`} class="book-card__cover" loading="lazy" />
+  ) : (
+    <div class="book-card__cover" aria-hidden="true"></div>
+  )}
+  <div class="book-card__info">
+    <h3 class="book-card__title">{title}</h3>
+    <p class="book-card__author">{author} · {year}</p>
+    {rating && (
+      <p class="book-card__rating">{renderRating(rating)}</p>
+    )}
+    <p class="book-card__excerpt">{excerpt}</p>
+    <div class="book-card__shelf">
+      <TypeBadge type={shelf} label={shelf.replace(/-/g, ' ')} />
+      <TypeBadge type={status} label={status} />
+    </div>
+    {externalLink && (
+      <a href={externalLink} target="_blank" rel="noopener noreferrer" class="book-card__link">
+        Ver libro →
+      </a>
+    )}
+  </div>
+</div>

@@ -1,0 +1,144 @@
+---
+/**
+ * INICIO — Página principal del sitio.
+ * Muestra presentación breve, feed de últimas entradas,
+ * contadores, y línea de tiempo abierta.
+ */
+import Base from '../layouts/Base.astro';
+import EntryCard from '../components/EntryCard.astro';
+import TypeBadge from '../components/TypeBadge.astro';
+import { getCollection } from 'astro:content';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Leer texto de presentación corta
+const aboutShortPath = path.resolve('./content/config/about-short.md');
+const aboutShort = fs.readFileSync(aboutShortPath, 'utf-8');
+
+// Obtener todas las colecciones y combinar
+const archivo = (await getCollection('archivo')).filter(e => !e.data.draft);
+const proyectos = (await getCollection('proyectos')).filter(e => !e.data.draft);
+const campo = (await getCollection('campo')).filter(e => !e.data.draft);
+const biblioteca = await getCollection('biblioteca');
+const tecnologia = (await getCollection('tecnologia')).filter(e => !e.data.draft);
+const arte = (await getCollection('arte')).filter(e => !e.data.draft);
+
+// Construir un feed unificado con las últimas entradas
+type FeedItem = {
+  title: string;
+  date: Date;
+  type: string;
+  excerpt: string;
+  tags: string[];
+  href: string;
+  collection: string;
+};
+
+const feedItems: FeedItem[] = [
+  ...archivo.map(e => ({
+    title: e.data.title,
+    date: e.data.date,
+    type: e.data.type,
+    excerpt: e.data.excerpt,
+    tags: e.data.tags,
+    href: `/archivo/${e.id}/`,
+    collection: 'archivo',
+  })),
+  ...proyectos.map(e => ({
+    title: e.data.title,
+    date: e.data.date,
+    type: e.data.discipline,
+    excerpt: e.data.excerpt,
+    tags: e.data.tags,
+    href: `/proyectos/${e.id}/`,
+    collection: 'proyectos',
+  })),
+  ...campo.map(e => ({
+    title: e.data.title,
+    date: e.data.date,
+    type: e.data.category,
+    excerpt: e.data.excerpt,
+    tags: e.data.tags,
+    href: `/campo/${e.id}/`,
+    collection: 'campo',
+  })),
+  ...tecnologia.map(e => ({
+    title: e.data.title,
+    date: e.data.date,
+    type: e.data.category,
+    excerpt: e.data.excerpt,
+    tags: e.data.tags,
+    href: `/tecnologia/${e.id}/`,
+    collection: 'tecnologia',
+  })),
+  ...arte.map(e => ({
+    title: e.data.title,
+    date: e.data.date,
+    type: e.data.medium,
+    excerpt: e.data.excerpt,
+    tags: e.data.tags,
+    href: `/arte/${e.id}/`,
+    collection: 'arte',
+  })),
+];
+
+// Ordenar por fecha descendente y tomar las 6 más recientes
+const latestEntries = feedItems
+  .sort((a, b) => b.date.getTime() - a.date.getTime())
+  .slice(0, 6);
+
+// Contadores
+const totalEntries = archivo.length + proyectos.length + campo.length + tecnologia.length + arte.length;
+const totalBooks = biblioteca.length;
+const totalCampo = campo.length;
+---
+
+<Base title="Archivo de Campo — Arquitectura, Ingeniería Civil & Estimating">
+  <!-- Presentación -->
+  <header class="page-header">
+    <h1>Archivo de Campo</h1>
+    <p class="page-header__subtitle">{aboutShort}</p>
+  </header>
+
+  <!-- Contadores -->
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat__number">{totalEntries}</span>
+      <span class="stat__label">Entradas</span>
+    </div>
+    <div class="stat">
+      <span class="stat__number">{totalBooks}</span>
+      <span class="stat__label">Biblioteca</span>
+    </div>
+    <div class="stat">
+      <span class="stat__number">{totalCampo}</span>
+      <span class="stat__label">Campo & Obra</span>
+    </div>
+  </div>
+
+  <!-- Feed de últimas entradas -->
+  <section>
+    <h2 style="font-family: var(--font-mono); font-size: var(--fs-sm); text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); margin-bottom: 1.5rem;">
+      Últimas entradas
+    </h2>
+    <ul class="entry-list">
+      {latestEntries.map(entry => (
+        <li class="entry-list__item">
+          <EntryCard
+            href={entry.href}
+            title={entry.title}
+            date={entry.date}
+            type={entry.type}
+            excerpt={entry.excerpt}
+            tags={entry.tags}
+          />
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Línea de tiempo -->
+  <div class="timeline">
+    2024 →
+  </div>
+</Base>

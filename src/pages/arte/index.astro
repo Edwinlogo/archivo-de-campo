@@ -1,0 +1,44 @@
+---
+/**
+ * ARTE & SENSIBILIDAD VISUAL — Grid visual de contenido artístico.
+ * Masonry layout con más imagen que texto.
+ */
+import Base from '../../layouts/Base.astro';
+import TypeBadge from '../../components/TypeBadge.astro';
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('arte'))
+  .filter(e => !e.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Base title="Arte & Sensibilidad Visual — Archivo de Campo" description="Sketches, fotografía artística, recorridos virtuales y multimedia exploratorio.">
+  <header class="page-header">
+    <h1>Arte & Sensibilidad Visual</h1>
+    <p class="page-header__subtitle">
+      Lo que mueve, lo que inspira. Sketches, fotografía, recorridos virtuales.
+    </p>
+  </header>
+
+  <div class="masonry-grid">
+    {entries.map(entry => (
+      <div class="masonry-grid__item">
+        <a href={`/arte/${entry.id}/`} class="masonry-card">
+          {entry.data.cover ? (
+            <img src={entry.data.cover} alt={entry.data.title} class="masonry-card__image" loading="lazy" />
+          ) : (
+            <div class="masonry-card__image" style="height: 180px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--ink-faint);">
+              {entry.data.medium}
+            </div>
+          )}
+          <div class="masonry-card__body">
+            <h3 class="masonry-card__title">{entry.data.title}</h3>
+            <span class="masonry-card__medium">
+              <TypeBadge type={entry.data.medium} />
+            </span>
+          </div>
+        </a>
+      </div>
+    ))}
+  </div>
+</Base>

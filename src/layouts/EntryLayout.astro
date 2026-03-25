@@ -1,0 +1,50 @@
+---
+/**
+ * EntryLayout — Layout para entradas individuales de cualquier colección.
+ * Muestra header con título, fecha, type badge, tags, y el contenido MDX.
+ * Props: title, date, type, tags, backHref, backLabel, excerpt.
+ */
+import Base from './Base.astro';
+import TypeBadge from '../components/TypeBadge.astro';
+
+interface Props {
+  title: string;
+  date: Date;
+  type: string;
+  tags?: string[];
+  backHref: string;
+  backLabel: string;
+  excerpt?: string;
+}
+
+const { title, date, type, tags = [], backHref, backLabel, excerpt } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('es-ES', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<Base title={`${title} — Archivo de Campo`} description={excerpt}>
+  <a href={backHref} class="entry-back">← {backLabel}</a>
+
+  <header class="entry-header">
+    <h1>{title}</h1>
+    <div class="entry-header__meta">
+      <span class="entry-header__date">{formattedDate}</span>
+      <TypeBadge type={type} />
+    </div>
+    {tags.length > 0 && (
+      <div class="entry-header__tags">
+        {tags.map(tag => (
+          <a href={`/etiquetas/${tag}/`} class="tag-pill">{tag}</a>
+        ))}
+      </div>
+    )}
+  </header>
+
+  <article class="prose">
+    <slot />
+  </article>
+</Base>

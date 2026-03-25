@@ -1,0 +1,65 @@
+---
+/**
+ * Gallery — Galería fotográfica con lightbox.
+ * Muestra miniaturas en grid; al hacer click abre imagen completa.
+ * Props: images (array de URLs de imagen).
+ */
+interface Props {
+  images: string[];
+}
+
+const { images } = Astro.props;
+const galleryId = `gallery-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class="gallery" id={galleryId}>
+  {images.map((src, i) => (
+    <div class="gallery__item" data-gallery={galleryId} data-index={i}>
+      <img src={src} alt={`Imagen ${i + 1}`} loading="lazy" />
+    </div>
+  ))}
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id={`${galleryId}-lightbox`}>
+  <button class="lightbox__close" aria-label="Cerrar">&times;</button>
+  <img src="" alt="Vista ampliada" />
+</div>
+
+<script define:vars={{ galleryId }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const gallery = document.getElementById(galleryId);
+    const lightbox = document.getElementById(`${galleryId}-lightbox`);
+    if (!gallery || !lightbox) return;
+
+    const lightboxImg = lightbox.querySelector('img');
+    const closeBtn = lightbox.querySelector('.lightbox__close');
+    const items = gallery.querySelectorAll('.gallery__item');
+
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        const img = item.querySelector('img');
+        if (img && lightboxImg) {
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt;
+          lightbox.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    closeBtn?.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  });
+</script>

@@ -1,0 +1,35 @@
+---
+/**
+ * Base — Layout principal del sitio.
+ * Incluye head, sidebar, mobile nav y contenedor de contenido.
+ * Todas las páginas heredan de este layout.
+ */
+import BaseHead from '../components/BaseHead.astro';
+import Sidebar from '../components/Sidebar.astro';
+import MobileNav from '../components/MobileNav.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <BaseHead title={title} description={description} ogImage={ogImage} />
+  </head>
+  <body>
+    <div class="site-wrapper">
+      <Sidebar />
+      <MobileNav />
+      <main class="site-content">
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>
