@@ -1,5 +1,3 @@
-# Sobre mí
-
 Soy estudiante de arquitectura e ingeniero civil, con experiencia práctica en construcción y estimación de costos. Mi formación no sigue un camino lineal: se construye en dos frentes simultáneos que, lejos de contradecirse, se potencian entre sí.
 
 ## Dos disciplinas, una sola visión
@@ -16,6 +14,7 @@ No es un blog convencional ni un portafolio tradicional. Es un archivo vivo: abi
 
 ## Contacto
 
+- **Edwin López**
 - Email: [jelopezg@ut.edu.co](mailto:jelopezg@ut.edu.co)
 - Whatsapp: [3144290830](https://wa.me/573144290830)
 
