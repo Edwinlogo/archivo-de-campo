@@ -14,7 +14,7 @@ No es un blog convencional ni un portafolio tradicional. Es un archivo vivo: abi
 
 ## Contacto
 
-- **Edwin López**
+- _José Edwin López González_
 - Email: [jelopezg@ut.edu.co](mailto:jelopezg@ut.edu.co)
 - Whatsapp: [3144290830](https://wa.me/573144290830)
 
