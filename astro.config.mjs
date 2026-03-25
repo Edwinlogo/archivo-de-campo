@@ -9,7 +9,7 @@ export default defineConfig({
   // Cambia 'site' a tu dominio personalizado si tienes uno.
   // Si usas GitHub Pages sin dominio propio, usa:
   //   site: 'https://Edwinlogo.github.io', base: '/archivo-de-campo'
-  site: 'https://Edwinlogo.github.io',
+  site: 'https://blog.dcedwin.com',
   base: '/',
 
   integrations: [mdx(), sitemap()],
