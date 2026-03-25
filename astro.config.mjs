@@ -5,16 +5,12 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  // ─── Para GitHub Pages ───
-  // Reemplaza 'TU-USUARIO' con tu nombre de usuario de GitHub
-  // y 'archivo-de-campo' con el nombre de tu repositorio.
+  // ─── Configuración del sitio ───
+  // Cambia 'site' a tu dominio personalizado si tienes uno.
+  // Si usas GitHub Pages sin dominio propio, usa:
+  //   site: 'https://Edwinlogo.github.io', base: '/archivo-de-campo'
   site: 'https://Edwinlogo.github.io',
-  base: '/archivo-de-campo',
-
-  // ─── Para dominio propio (Netlify, Vercel, etc.) ───
-  // Descomenta la línea de abajo y comenta las dos de arriba:
-  // site: 'https://archivodecampo.com',
-  // base: '/',
+  base: '/',
 
   integrations: [mdx(), sitemap()],
 });
