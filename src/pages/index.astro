@@ -13,7 +13,11 @@ import path from 'node:path';
 
 // Leer texto de presentación corta
 const aboutShortPath = path.resolve('./content/config/about-short.md');
-const aboutShort = fs.readFileSync(aboutShortPath, 'utf-8');
+const aboutShortRaw = fs.readFileSync(aboutShortPath, 'utf-8');
+const aboutShort = aboutShortRaw
+  .replace(/\*\*([^*\_]+)\*\*/g, '<strong>$1</strong>')
+  .replace(/__([^_]+)__/g, '<strong>$1</strong>')
+  .replace(/\n\n/g, '<br><br>');
 
 // Obtener todas las colecciones y combinar
 const archivo = (await getCollection('archivo')).filter(e => !e.data.draft);
@@ -97,7 +101,7 @@ const totalCampo = campo.length;
   <!-- Presentación -->
   <header class="page-header">
     <h1>Archivo de Campo</h1>
-    <p class="page-header__subtitle">{aboutShort}</p>
+    <p class="page-header__subtitle" set:html={aboutShort} />
   </header>
 
   <!-- Contadores -->

@@ -34,7 +34,9 @@ function simpleMarkdownToHtml(md: string): string {
       // Procesar links y bold/italic inline
       let html = block
         .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/__([^_]+)__/g, '<strong>$1</strong>')
         .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+        .replace(/_([^_]+)_/g, '<em>$1</em>')
         .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
       return `<p>${html}</p>`;
     })
