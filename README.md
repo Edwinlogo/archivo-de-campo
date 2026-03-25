@@ -57,7 +57,7 @@ Crea un archivo `.mdx` en `content/archivo/`:
 ```mdx
 ---
 title: "Nombre de tu apunte"
-date: 2024-12-01
+date: 2026-12-01
 type: "apunte"           # opciones: apunte, reflexión, memoria, resumen, idea
 tags: ["etiqueta1", "etiqueta2"]
 excerpt: "Resumen en 1-2 líneas para el listado."
@@ -74,8 +74,8 @@ Crea un archivo `.mdx` en `content/proyectos/`:
 ```mdx
 ---
 title: "Nombre del proyecto"
-date: 2024-12-01
-year: 2024
+date: 2026-12-01
+year: 2026
 discipline: "arquitectura"   # opciones: arquitectura, ingeniería civil, estimating, mixto
 status: "entregado"          # opciones: en proceso, entregado, profesional
 tags: ["etiqueta1"]
@@ -94,8 +94,8 @@ Crea un archivo `.mdx` en `content/campo/`:
 ```mdx
 ---
 title: "Nombre de la entrada"
-date: 2024-12-01
-year: 2024
+date: 2026-12-01
+year: 2026
 category: "construcción"     # opciones: construcción, torres-telecomunicaciones,
                              # planos-documentación, urbanismo, remodelaciones,
                              # planta-concreto, estimating-florida
@@ -118,7 +118,7 @@ Contenido con multimedia...
 title: "Título del libro"
 author: "Nombre del autor"
 year: 2020
-dateAdded: 2024-12-01
+dateAdded: 2026-12-01
 shelf: "diseño-y-espacio"    # opciones: diseño-y-espacio, estructura-y-materiales,
                              # estimating-y-costos, historia-y-teoria,
                              # tecnologia, lectura-general
@@ -198,4 +198,4 @@ Edita las variables CSS al inicio de `src/styles/global.css`:
 
 ---
 
-*Archivo de Campo — 2024 →*
+*Archivo de Campo — 2026 →*
