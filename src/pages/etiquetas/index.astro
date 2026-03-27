@@ -1,18 +1,15 @@
 ---
 /**
  * ETIQUETAS — Todas las etiquetas del sitio ordenadas por frecuencia.
- * Cruza todas las colecciones para mostrar cada etiqueta.
+ * Cruza todas las colecciones activas para mostrar cada etiqueta.
  */
 import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
-// Recopilar etiquetas de todas las colecciones
+// Recopilar etiquetas de todas las colecciones activas
 const archivo = (await getCollection('archivo')).filter(e => !e.data.draft);
 const proyectos = (await getCollection('proyectos')).filter(e => !e.data.draft);
-const campo = (await getCollection('campo')).filter(e => !e.data.draft);
 const biblioteca = await getCollection('biblioteca');
-const tecnologia = (await getCollection('tecnologia')).filter(e => !e.data.draft);
-const arte = (await getCollection('arte')).filter(e => !e.data.draft);
 
 // Contar frecuencia de cada etiqueta
 const tagCount = new Map<string, number>();
@@ -27,16 +24,13 @@ function countTags(entries: { data: { tags: string[] } }[]) {
 
 countTags(archivo);
 countTags(proyectos);
-countTags(campo);
 countTags(biblioteca);
-countTags(tecnologia);
-countTags(arte);
 
 // Ordenar por frecuencia descendente
 const sortedTags = [...tagCount.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
-<Base title="Etiquetas — Archivo de Campo" description="Todas las etiquetas usadas en el sitio, ordenadas por frecuencia.">
+<Base title="Etiquetas — Edwin López" description="Todas las etiquetas usadas en el sitio, ordenadas por frecuencia.">
   <header class="page-header">
     <h1>Etiquetas</h1>
     <p class="page-header__subtitle">

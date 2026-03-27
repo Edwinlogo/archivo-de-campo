@@ -16,9 +16,9 @@ const entries = (await getCollection('archivo'))
 const allTags = [...new Set(entries.flatMap(e => e.data.tags))].sort();
 ---
 
-<Base title="El Archivo — Archivo de Campo" description="Apuntes de clase, reflexiones personales, memorias y resúmenes conceptuales.">
+<Base title="Ejercicios de Arquitectura — Edwin López" description="Apuntes de clase, reflexiones personales, memorias y resúmenes conceptuales.">
   <header class="page-header">
-    <h1>El Archivo</h1>
+    <h1>Ejercicios de Arquitectura</h1>
     <p class="page-header__subtitle">
       Apuntes de clase, reflexiones personales, memorias, resúmenes conceptuales e ideas en desarrollo.
     </p>
@@ -30,7 +30,7 @@ const allTags = [...new Set(entries.flatMap(e => e.data.tags))].sort();
     {entries.map(entry => (
       <li class="entry-list__item">
         <EntryCard
-          href={`/archivo/${entry.id}/`}
+          href={`/ejercicios/${entry.id}/`}
           title={entry.data.title}
           date={entry.data.date}
           type={entry.data.type}

@@ -1,6 +1,6 @@
 ---
 /**
- * ETIQUETA INDIVIDUAL — Lista todas las entradas de TODAS las colecciones
+ * ETIQUETA INDIVIDUAL — Lista todas las entradas de las colecciones activas
  * que comparten una etiqueta específica.
  */
 import Base from '../../layouts/Base.astro';
@@ -10,21 +10,14 @@ import { getCollection } from 'astro:content';
 export async function getStaticPaths() {
   const archivo = (await getCollection('archivo')).filter(e => !e.data.draft);
   const proyectos = (await getCollection('proyectos')).filter(e => !e.data.draft);
-  const campo = (await getCollection('campo')).filter(e => !e.data.draft);
   const biblioteca = await getCollection('biblioteca');
-  const tecnologia = (await getCollection('tecnologia')).filter(e => !e.data.draft);
-  const arte = (await getCollection('arte')).filter(e => !e.data.draft);
 
-  // Recopilar todas las etiquetas únicas
   const allTags = new Set<string>();
 
   const allEntries = [
-    ...archivo.map(e => ({ ...e, _collection: 'archivo', _type: e.data.type, _href: `/archivo/${e.id}/` })),
+    ...archivo.map(e => ({ ...e, _collection: 'archivo', _type: e.data.type, _href: `/ejercicios/${e.id}/` })),
     ...proyectos.map(e => ({ ...e, _collection: 'proyectos', _type: e.data.discipline, _href: `/proyectos/${e.id}/` })),
-    ...campo.map(e => ({ ...e, _collection: 'campo', _type: e.data.category, _href: `/campo/${e.id}/` })),
-    ...biblioteca.map(e => ({ ...e, _collection: 'biblioteca', _type: e.data.shelf, _href: '#' })),
-    ...tecnologia.map(e => ({ ...e, _collection: 'tecnologia', _type: e.data.category, _href: `/tecnologia/${e.id}/` })),
-    ...arte.map(e => ({ ...e, _collection: 'arte', _type: e.data.medium, _href: `/arte/${e.id}/` })),
+    ...biblioteca.map(e => ({ ...e, _collection: 'biblioteca', _type: e.data.shelf, _href: `/literatura/${e.id}/` })),
   ];
 
   allEntries.forEach(e => e.data.tags.forEach((t: string) => allTags.add(t)));
@@ -47,7 +40,7 @@ export async function getStaticPaths() {
 const { tag, entries } = Astro.props;
 ---
 
-<Base title={`Etiqueta: ${tag} — Archivo de Campo`} description={`Todas las entradas con la etiqueta "${tag}".`}>
+<Base title={`Etiqueta: ${tag} — Edwin López`} description={`Todas las entradas con la etiqueta "${tag}".`}>
   <header class="page-header">
     <h1>#{tag}</h1>
     <p class="page-header__subtitle">

@@ -8,12 +8,9 @@ const currentPath = Astro.url.pathname;
 
 const navItems = [
   { href: '/', label: 'Inicio' },
-  { href: '/archivo/', label: 'El Archivo' },
+  { href: '/ejercicios/', label: 'Ejercicios de Arquitectura' },
   { href: '/proyectos/', label: 'Proyectos & Proceso' },
-  { href: '/campo/', label: 'Campo & Obra' },
-  { href: '/biblioteca/', label: 'Biblioteca' },
-  { href: '/tecnologia/', label: 'Tecnología' },
-  { href: '/arte/', label: 'Arte & Visual' },
+  { href: '/literatura/', label: 'Literatura' },
   { href: '/etiquetas/', label: 'Etiquetas' },
   { href: '/sobre/', label: 'Sobre mí' },
 ];
@@ -26,7 +23,7 @@ function isActive(href: string): boolean {
 
 <aside class="sidebar" aria-label="Navegación principal">
   <div class="sidebar__logo">
-    <a href="/">Archivo<br />de Campo</a>
+    <a href="/">Edwin<br />López</a>
   </div>
 
   <nav>

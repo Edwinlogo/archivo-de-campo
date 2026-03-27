@@ -17,17 +17,17 @@ const tags = [...new Set(entries.flatMap(e => e.data.tags || []))].sort();
 const allFilters = [...shelves, ...statuses, ...tags];
 ---
 
-<Base title="Biblioteca — Archivo de Campo" description="Libros recomendados sobre arquitectura, ingeniería, estimating y más.">
+<Base title="Literatura — Edwin López" description="Libros recomendados sobre arquitectura, ingeniería, estimating y más.">
   <header class="page-header">
-    <h1>Biblioteca</h1>
+    <h1>Literatura</h1>
     <p class="page-header__subtitle">
       Libros recomendados con comentario personal y enlace externo.
     </p>
   </header>
 
-  <TagFilter tags={allFilters} target="#biblioteca-grid" />
+  <TagFilter tags={allFilters} target="#literatura-grid" />
 
-  <div class="book-grid" id="biblioteca-grid">
+  <div class="book-grid" id="literatura-grid">
     {entries.map(entry => (
       <div data-tags={[entry.data.shelf, entry.data.status, ...entry.data.tags].join(',')}>
         <BookCard

@@ -8,12 +8,9 @@ const currentPath = Astro.url.pathname;
 
 const navItems = [
   { href: '/', label: 'Inicio' },
-  { href: '/archivo/', label: 'El Archivo' },
+  { href: '/ejercicios/', label: 'Ejercicios de Arquitectura' },
   { href: '/proyectos/', label: 'Proyectos & Proceso' },
-  { href: '/campo/', label: 'Campo & Obra' },
-  { href: '/biblioteca/', label: 'Biblioteca' },
-  { href: '/tecnologia/', label: 'Tecnología' },
-  { href: '/arte/', label: 'Arte & Visual' },
+  { href: '/literatura/', label: 'Literatura' },
   { href: '/etiquetas/', label: 'Etiquetas' },
   { href: '/sobre/', label: 'Sobre mí' },
 ];
@@ -27,7 +24,7 @@ function isActive(href: string): boolean {
 <!-- Header fijo mobile -->
 <header class="mobile-header" id="mobile-header">
   <div class="mobile-header__title">
-    <a href="/">Archivo de Campo</a>
+    <a href="/">Edwin López</a>
   </div>
   <button class="hamburger" id="hamburger-btn" aria-label="Abrir menú" aria-expanded="false">
     <span></span>
